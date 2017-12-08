@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "image": "/img/tracks/roses_background.jpg",
+      "title": "Roses",
+      "description": "88GLAM & XO Type Beat",
+      "soundcloudId": "364427240",
+      "tags": [
+        "80 BPM",
+        "Minimalistic Trap"
+      ]
+    },
+    {
+      "id": 2,
+      "image": "/img/tracks/promise_background.jpg",
+      "title": "Promise",
+      "description": "Young Thug & London On Da Track Type Beat",
+      "soundcloudId": "364828037",
+      "tags": [
+        "130 BPM",
+        "Melodic Trap"
+      ]
+    }
+  ]
+}

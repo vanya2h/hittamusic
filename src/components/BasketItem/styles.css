@@ -1,0 +1,16 @@
+:local(.basketItem) {
+  display:block;
+}
+
+:local(.title) {
+  margin:0;
+  font-size:25px;
+}
+
+:local(.description) {
+  margin:0;
+}
+
+:local(.meta) {
+  margin-top:10px;
+}

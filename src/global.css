@@ -1,0 +1,39 @@
+h1,h2,h3,h4,h5,h6 {
+  margin:0;
+}
+
+.page {
+  min-height:100vh;
+  background:#222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} 
+
+.page-inner {
+  width:100%;
+  text-align: center;
+  color:#fff;
+}
+
+.ui.segment {
+  background:transparent;
+}
+
+.carousel .slide iframe {
+  width:100%!important;
+  margin:0!important
+}
+
+.carousel.carousel-slider .control-arrow {
+  width:100px!important;
+}
+
+.carousel .control-next.control-arrow:before {
+  border-left:11px solid #fff!important;
+}
+
+.carousel .control-arrow:before, .carousel.carousel-slider .control-arrow:before {
+  border-top: 10px solid transparent!important;
+  border-bottom: 10px solid transparent!important;
+}
