@@ -9,7 +9,12 @@
       "tags": [
         "80 BPM",
         "Minimalistic Trap"
-      ]
+      ],
+      "price": {
+        "exclusive": 35,
+        "premium": 15,
+        "basic": 10
+      }
     },
     {
       "id": 2,
@@ -20,7 +25,12 @@
       "tags": [
         "130 BPM",
         "Melodic Trap"
-      ]
+      ],
+      "price": {
+        "exclusive": 35,
+        "premium": 15,
+        "basic": 10
+      }
     }
   ]
 }

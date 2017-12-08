@@ -1,0 +1,62 @@
+:local(.switcher) {
+  background:rgba(0,0,0,.8);
+  border-radius:4px 4px 0 0;
+  position: fixed;
+  z-index:1010;
+  right:40px;
+  bottom:0;
+  max-height:40px;
+  height:40px;
+  width:300px;
+  overflow:hidden;
+  transition:0.2s all ease;
+}
+
+:local(.toggler) {
+  height: 40px;
+  overflow:hidden;
+  margin:auto;
+  padding:10px;
+  cursor:pointer;
+  transition:0.2s all ease;
+}
+
+:local(.toggler):hover {
+  background:rgba(0,0,0,0.8);
+}
+
+:local(.active) {
+  max-height:400px!important;
+  height:400px!important;
+}
+
+:local(.list) {
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+:local(.item) {
+  padding:10px 16px;
+  text-align: left;
+  cursor:pointer;
+}
+
+:local(.item) :global(.icon) {
+  opacity:0.3;
+  transition:0.2s all ease;
+  transform:scale(0.7);
+}
+
+:local(.item):hover :global(.icon) {
+  opacity:1.0;
+  transform:scale(1);
+}
+
+:local(.price) {
+  transition:0.2s all ease;
+  float:right;
+  opacity:0.5;
+}
+
+:local(.item):hover :local(.price) {
+  opacity:1;
+}

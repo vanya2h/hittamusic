@@ -1,9 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import withStyles from "../HOC/styles";
 import { NavLink } from "react-router-dom";
 import componentStyles from "./styles.css";
 
-const Header = ({ classes }) => {
+const Header = ({ classes, cartLength }) => {
   return (
     <div className={classes.menu}>
       <div className="ui container">
@@ -15,9 +16,9 @@ const Header = ({ classes }) => {
             How To Buy Beats?
           </a>
           <div className="right menu">
-            <NavLink  activeClassName="active"  to="/basket" className="ui item">
-              Basket
-              <div className="floating ui red label">22</div>
+            <NavLink activeClassName="active" to="/cart" className="ui item">
+              Cart
+              <div className="ui red label">{cartLength}</div>
             </NavLink>
           </div>
         </div>
@@ -26,4 +27,10 @@ const Header = ({ classes }) => {
   )
 };
 
-export default withStyles(Header, componentStyles);
+const mapStateToProps = ({ cart }) => ({
+  cartLength: cart.items.length,
+});
+
+export default connect(mapStateToProps)(
+  withStyles(Header, componentStyles)
+);

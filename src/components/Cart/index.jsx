@@ -1,21 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-import BasketItem from "../BasketItem";
+import CartItem from "../CartItem";
 import withStyles from "../HOC/styles";
-import basketStyles from "./styles.css";
-import { removeItemFromBasket } from "../../actions/basket";
+import cartStyles from "./styles.css";
+import { removeItemFromCart } from "../../actions/cart";
 
-class Basket extends React.Component {
+class Cart extends React.Component {
   constructor(props) {
     super(props);
     this.renderItems = this.renderItems.bind(this);
   }
 
   renderItems() {
-    const { 
-      items, 
+    const {
+      items,
       classes,
-      removeItemFromBasket
+      removeItemFromCart
     } = this.props;
 
     if (!items) {
@@ -27,15 +27,18 @@ class Basket extends React.Component {
         Seems, you forgot to pick something
       </div>
     } else {
-      return items.map((item, i) => 
-        <BasketItem onRemove={removeItemFromBasket} key={i} item={item} />
+      return items.map((item, i) =>
+        <CartItem
+          onRemove={() => { removeItemFromCart(item.id) }}
+          key={i}
+          item={item}
+        />
       );
     }
   }
 
   render() {
-    const { classes } = this.props; 
-    console.log(this.props)
+    const { classes } = this.props;
 
     return (
       <div className={classes.wrapper}>
@@ -52,14 +55,14 @@ class Basket extends React.Component {
   }
 }
 
-const mapStateToProps = ({ basket, items }) => ({
-  items: basket.items.map(item => items.filter(i => i.id === item)[0]),
+const mapStateToProps = ({ cart, items }) => ({
+  items: cart.items.map(item => items.filter(i => i.id === item.id)[0]),
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeItemFromBasket: id => dispatch(removeItemFromBasket(id)),
+  removeItemFromCart: id => dispatch(removeItemFromCart(id)),
 })
 
-export default connect(mapStateToProps, null)(
-  withStyles(Basket, basketStyles)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(Cart, cartStyles)
 );

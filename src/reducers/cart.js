@@ -1,6 +1,6 @@
 import {
-  BASKET_ADD_ITEM,
-  BASKET_REMOVE_ITEM
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM
 } from '../consts';
 
 const defaultState = {
@@ -9,18 +9,20 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case BASKET_ADD_ITEM:
+    case CART_ADD_ITEM:
       return {
         ...state,
         items: [
           ...state.items,
-          action.payload
+          {
+            ...action.payload,
+          }
         ]
       }
-    case BASKET_REMOVE_ITEM:
+    case CART_REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter(item => item.id !== action.payload),
+        items: state.items.filter(item => item !== action.payload),
       }
     default:
       return state;

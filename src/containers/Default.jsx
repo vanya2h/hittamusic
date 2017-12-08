@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 //import { verify } from '../actions/auth';
 //import { TOKEN } from '../actions/constants';
 import Header from '../components/Header';
+import Footer from "../components/Footer";
 
 class DefaultRoute extends Component {
   render() {
@@ -16,6 +17,7 @@ class DefaultRoute extends Component {
         <div className="page">
           <Route {...this.props} />
         </div>
+        <Footer />
       </div>
     );
   }

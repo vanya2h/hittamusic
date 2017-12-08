@@ -6,7 +6,7 @@ import componentStyles from './styles.css';
 import config from '../../../config';
 import CarouselItem from "../CarouselItem";
 import { switchItem } from "../../actions/carousel";
-import { addItemToBasket }  from "../../actions/basket";
+import { addItemToCart, removeItemFromCart } from "../../actions/cart";
 
 class CarouselComponent extends React.Component {
   constructor(props) {
@@ -15,10 +15,12 @@ class CarouselComponent extends React.Component {
   }
 
   renderCarouselItems() {
-    const { 
-      items, 
+    const {
+      items,
       classes,
-      addItemToBasket
+      addItemToCart,
+      removeItemFromCart,
+      cartItems,
     } = this.props;
 
     if (!items) {
@@ -30,11 +32,20 @@ class CarouselComponent extends React.Component {
         Seems, there's no beats
       </div>
     } else {
-      return items.map((item, i) => 
-        <CarouselItem 
-          key={i} 
-          item={item} 
-          onAddToBasket={addItemToBasket} 
+      return items.map((item, i) =>
+        <CarouselItem
+          key={i}
+          item={item}
+          number={i}
+          isAdded={cartItems.filter(
+            id => id === item.id
+          )[0]}
+          onAddToCart={(option) => {
+            addItemToCart(item.id, option)
+          }}
+          onRemoveFromCart={() => {
+            removeItemFromCart(item.id)
+          }}
         />
       );
     }
@@ -45,22 +56,33 @@ class CarouselComponent extends React.Component {
   }
 
   render() {
-    const { selectedItem } = this.props;
+    const {
+      selectedItem
+    } = this.props;
+
     return (
-      <Carousel onChange={this.switchItem} selectedItem={selectedItem} showThumbs={false} showStatus={false}>
+      <Carousel
+        onChange={this.switchItem}
+        selectedItem={selectedItem}
+        showThumbs={false}
+        showIndicators={false}
+        showStatus={false}
+      >
         {this.renderCarouselItems()}
       </Carousel>
     );
   }
 };
 
-const mapStateToProps = ({ carousel }) => ({
+const mapStateToProps = ({ carousel, cart }) => ({
   selectedItem: carousel.selectedItem,
+  cartItems: cart.items,
 });
 
 const mapDispatchToProps = dispatch => ({
-  addItemToBasket: (id) => dispatch(addItemToBasket(id)),
-  switchItem: (number) => dispatch(switchItem(number)),
+  addItemToCart: (id, option) => dispatch(addItemToCart(id, option)),
+  switchItem: number => dispatch(switchItem(number)),
+  removeItemFromCart: id => dispatch(removeItemFromCart(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(

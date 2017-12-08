@@ -1,17 +1,17 @@
-:local(.menu) {
+:local(.footer) {
   position: fixed;
   left:0;
-  top:0;
+  bottom:0;
   width:100%;
   z-index:1000;
 }
 
-:local(.menu) :global(.item.active) {
+:local(.footer) :global(.item.active) {
   color:#fff!important;
   border-color:#fff!important;
 }
 
-:local(.menu) :global(.item) {
+:local(.footer) :global(.item) {
   color:#fff!important;
   border-color:rgba(255,255,255,0.4);
 }

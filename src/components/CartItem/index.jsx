@@ -9,21 +9,20 @@ class BasketItem extends React.Component {
   }
 
   render() {
-    const { 
+    const {
       classes,
+      onRemove,
       item,
     } = this.props;
-
-    console.log(this.props);
 
     return (
       <div className={classes.basketItem}>
         <div className="ui grid middle aligned">
-          <div className="nine wide column">
+          <div className="seven wide column">
             <h2 className={classes.title}>{item.title}</h2>
             <p className={classes.description}>{item.description}</p>
           </div>
-          <div className="five wide column"  style={{textAlign:"right"}}>
+          <div className="five wide column" style={{ textAlign: "right" }}>
             <div className="ui floating dropdown labeled icon button">
               <i className="options icon"></i>
               <span className="text">Options</span>
@@ -34,10 +33,15 @@ class BasketItem extends React.Component {
               </div>
             </div>
           </div>
-          <div className="two wide column" style={{textAlign:"right"}}> 
+          <div className="two wide column" style={{ textAlign: "right" }}>
             <h3 className={classes.price}>
               $19.99
             </h3>
+          </div>
+          <div className="two wide column" style={{ textAlign: "right" }}>
+            <button className="ui button icon red" onClick={onRemove}>
+              <i className="icon close"></i>
+            </button>
           </div>
         </div>
       </div>
