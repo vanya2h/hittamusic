@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import CartItem from "../CartItem";
 import withStyles from "../HOC/styles";
 import cartStyles from "./styles.css";
-import { removeItemFromCart } from "../../actions/cart";
+import { removeItemFromCart, changeOption } from "../../actions/cart";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -15,7 +15,8 @@ class Cart extends React.Component {
     const {
       items,
       classes,
-      removeItemFromCart
+      removeItemFromCart,
+      changeOption
     } = this.props;
 
     if (!items) {
@@ -30,8 +31,10 @@ class Cart extends React.Component {
       return items.map((item, i) =>
         <CartItem
           onRemove={() => { removeItemFromCart(item.id) }}
+          onChangeOption={option => { changeOption(item.id, option) }}
           key={i}
           item={item}
+          number={i}
         />
       );
     }
@@ -56,11 +59,23 @@ class Cart extends React.Component {
 }
 
 const mapStateToProps = ({ cart, items }) => ({
-  items: cart.items.map(item => items.filter(i => i.id === item.id)[0]),
+  items: cart.items.map(item => {
+    const itemFromDb = items.filter(
+      current => current.id === item.id
+    )[0];
+
+    if (itemFromDb) {
+      return {
+        ...itemFromDb,
+        option: item.option,
+      }
+    }
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({
   removeItemFromCart: id => dispatch(removeItemFromCart(id)),
+  changeOption: (id, option) => dispatch(changeOption(id, option)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(

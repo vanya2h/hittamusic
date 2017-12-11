@@ -3,35 +3,6 @@ import withStyles from "../HOC/styles";
 import carouselItemStyles from "./styles.css";
 import config from "../../../config";
 
-const renderButton = (isAdded, add, remove, option, number) => {
-  if (isAdded) {
-    return (
-      <button
-        onClick={remove}
-        className="button ui red inverted big"
-      >
-        <span>Remove from cart</span>
-      </button>
-    );
-  } else {
-    return (
-      <span>
-        <select value={option} className={`ui selection dropdown-${number} large inverted button`}>
-          <option value="basic">Basic Lease</option>
-          <option value="premium">Premium Lease</option>
-          <option value="exclusive">Exclusive Rights</option>
-        </select>
-        <button
-          onClick={() => { add(option) }}
-          className="button ui green inverted large icon"
-        >
-          <span><i className="icon in cart"></i> Add To Cart</span>
-        </button>
-      </span>
-    );
-  }
-}
-
 const renderTags = tags =>
   tags.map((item, i) => (
     <div key={i} className="item">
@@ -41,19 +12,70 @@ const renderTags = tags =>
     </div>
   ));
 
+const ItemBar = ({ 
+  isAdded, 
+  onAddToCart, 
+  onRemoveFromCart,
+  dropdownReset,
+  option, 
+  key, 
+  classes,
+  item,
+}, props) => {
+  if (isAdded) {
+    return (
+      <button
+        onClick={() => {
+          onRemoveFromCart()
+            .then(() => dropdownReset())
+            .catch((err) => console.log(err));
+        }}
+        className="button ui red inverted big"
+      >
+        <span>Remove from cart</span>
+      </button>
+    );
+  } else {
+    return (
+      <span className={classes.bar}>
+        <select 
+          value={option} 
+          className={`ui selection dropdown-${key} large inverted ${classes.select}`}
+        >
+          <option value="basic">Basic Lease</option>
+          <option value="premium">Premium Lease</option>
+          <option value="exclusive">Exclusive Rights</option>
+        </select>
+        <button
+          onClick={() => { onAddToCart(option) }}
+          className="button ui green inverted large icon" 
+        >
+          <span>
+            <i className="icon in cart"></i> Add To Cart
+          </span>
+        </button>
+        <h3 className={classes.price}>
+          ${item.price[option]}
+        </h3>
+      </span>
+    );
+  }
+}
+
 class CarouselItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      option: "basic",
-    };
+    this.dropdownReset = this.dropdownReset.bind(this);
+    this.state = { option: "basic" };
   }
 
   componentDidMount() {
-    const { number } = this.props;
+    this.dropdownReset();
+  }
 
+  dropdownReset() {
     require("../../../dist/semantic/dist/semantic.min.js");
-    $(`.dropdown-${number}`).dropdown({
+    $(`.dropdown-${this.props.key}`).dropdown({
       onChange: option => this.setState({ option }),
       direction: "upward"
     });
@@ -66,7 +88,7 @@ class CarouselItem extends React.Component {
       onAddToCart,
       onRemoveFromCart,
       isAdded,
-      number
+      key
     } = this.props;
 
     const {
@@ -95,7 +117,7 @@ class CarouselItem extends React.Component {
               />
             </div>
             <div className={classes.action}>
-              {renderButton(isAdded, onAddToCart, onRemoveFromCart, option, number)}
+              <ItemBar {...this.props} option={option} dropdownReset={this.dropdownReset} />
             </div>
           </div>
         </div>

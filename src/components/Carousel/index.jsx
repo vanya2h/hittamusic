@@ -9,11 +9,6 @@ import { switchItem } from "../../actions/carousel";
 import { addItemToCart, removeItemFromCart } from "../../actions/cart";
 
 class CarouselComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.switchItem = this.switchItem.bind(this);
-  }
-
   renderCarouselItems() {
     const {
       items,
@@ -36,33 +31,23 @@ class CarouselComponent extends React.Component {
         <CarouselItem
           key={i}
           item={item}
-          number={i}
-          isAdded={cartItems.filter(
-            id => id === item.id
-          )[0]}
-          onAddToCart={(option) => {
-            addItemToCart(item.id, option)
-          }}
-          onRemoveFromCart={() => {
-            removeItemFromCart(item.id)
-          }}
+          isAdded={cartItems.filter(current => current.id === item.id)[0]}
+          onAddToCart={(option) => addItemToCart(item.id, option)}
+          onRemoveFromCart={() => removeItemFromCart(item.id)}
         />
       );
     }
   }
 
-  switchItem(i) {
-    this.props.switchItem(i);
-  }
-
   render() {
     const {
-      selectedItem
+      selectedItem,
+      switchItem
     } = this.props;
 
     return (
       <Carousel
-        onChange={this.switchItem}
+        onChange={switchItem}
         selectedItem={selectedItem}
         showThumbs={false}
         showIndicators={false}
