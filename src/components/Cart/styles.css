@@ -1,3 +1,11 @@
 :local(.action) {
   margin-top:20px;
 }
+
+:local(.noContent) {
+  text-align:center;
+}
+
+:local(.loading) {
+  text-align:center;
+}

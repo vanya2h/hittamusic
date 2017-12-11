@@ -1,6 +1,7 @@
 import React from "react";
 import withStyles from "../HOC/styles";
 import carouselItemStyles from "./styles.css";
+import Price from "../Price"
 import config from "../../../config";
 
 const renderTags = tags =>
@@ -12,13 +13,13 @@ const renderTags = tags =>
     </div>
   ));
 
-const ItemBar = ({ 
-  isAdded, 
-  onAddToCart, 
+const ItemBar = ({
+  isAdded,
+  onAddToCart,
   onRemoveFromCart,
   dropdownReset,
-  option, 
-  key, 
+  option,
+  number,
   classes,
   item,
 }, props) => {
@@ -38,9 +39,9 @@ const ItemBar = ({
   } else {
     return (
       <span className={classes.bar}>
-        <select 
-          value={option} 
-          className={`ui selection dropdown-${key} large inverted ${classes.select}`}
+        <select
+          value={option}
+          className={`ui selection dropdown-${number} large inverted ${classes.select}`}
         >
           <option value="basic">Basic Lease</option>
           <option value="premium">Premium Lease</option>
@@ -48,14 +49,14 @@ const ItemBar = ({
         </select>
         <button
           onClick={() => { onAddToCart(option) }}
-          className="button ui green inverted large icon" 
+          className="button ui green inverted large icon"
         >
           <span>
             <i className="icon in cart"></i> Add To Cart
           </span>
         </button>
         <h3 className={classes.price}>
-          ${item.price[option]}
+          <Price price={item.price[option]} />
         </h3>
       </span>
     );
@@ -75,7 +76,7 @@ class CarouselItem extends React.Component {
 
   dropdownReset() {
     require("../../../dist/semantic/dist/semantic.min.js");
-    $(`.dropdown-${this.props.key}`).dropdown({
+    $(`.dropdown-${this.props.number}`).dropdown({
       onChange: option => this.setState({ option }),
       direction: "upward"
     });
@@ -88,7 +89,6 @@ class CarouselItem extends React.Component {
       onAddToCart,
       onRemoveFromCart,
       isAdded,
-      key
     } = this.props;
 
     const {

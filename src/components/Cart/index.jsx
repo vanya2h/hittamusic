@@ -4,6 +4,7 @@ import CartItem from "../CartItem";
 import withStyles from "../HOC/styles";
 import cartStyles from "./styles.css";
 import { removeItemFromCart, changeOption } from "../../actions/cart";
+import translation from "./translation";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -16,16 +17,17 @@ class Cart extends React.Component {
       items,
       classes,
       removeItemFromCart,
-      changeOption
+      changeOption,
+      language,
     } = this.props;
 
     if (!items) {
       return <div className={classes.loading}>
-        Loading..
+        {translation[language]['loading']}
       </div>
     } else if (!items.length) {
-      return <div className={classes.noConent}>
-        Seems, you forgot to pick something
+      return <div className={classes.noContent}>
+        <h4>{translation[language]['no-content']}</h4>
       </div>
     } else {
       return items.map((item, i) =>
@@ -41,24 +43,27 @@ class Cart extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, language, items } = this.props;
 
     return (
       <div className={classes.wrapper}>
         <div className={classes.list}>
           {this.renderItems()}
         </div>
-        <div className={classes.action}>
-          <button className="ui button fluid big green">
-            Proceed To Checkout
-          </button>
-        </div>
+        {items && !!items.length &&
+          <div className={classes.action}>
+            <button className="ui button fluid big green">
+              {translation[language]["proceed"]}
+            </button>
+          </div>
+        }
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ cart, items }) => ({
+const mapStateToProps = ({ cart, items, app }) => ({
+  language: app.language,
   items: cart.items.map(item => {
     const itemFromDb = items.filter(
       current => current.id === item.id

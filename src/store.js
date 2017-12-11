@@ -9,6 +9,7 @@ const emptyState = {
   cart: {
     items: []
   },
+  app: {}
 }
 
 const defaultState = localStorage[LOCALSTORAGE]
@@ -18,13 +19,11 @@ const defaultState = localStorage[LOCALSTORAGE]
 const store = createStore(reducers, {
   ...defaultState,
   items: db.items,
-},
-  composeWithDevTools(applyMiddleware(thunk))
-);
+}, composeWithDevTools(applyMiddleware(thunk)));
 
 store.subscribe(() => {
-  const { cart } = store.getState();
-  localStorage[LOCALSTORAGE] = JSON.stringify({ cart });
+  const { cart, app } = store.getState();
+  localStorage[LOCALSTORAGE] = JSON.stringify({ cart, app });
 });
 
 export default store;
