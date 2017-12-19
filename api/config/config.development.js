@@ -8,5 +8,6 @@ module.exports = {
   },
   port: 3010,
   secret: process.env.SECRET,
-  isProduction: process.env.NODE_ENV === "production",
+  isProduction: false,
+  env: "production",
 };

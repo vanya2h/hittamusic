@@ -44,9 +44,9 @@ class Header extends React.Component {
             <NavLink exact activeClassName="active" to="/" className="item">
               {translation[currentLanguage]["beats"]}
             </NavLink>
-            <a className="item">
+            <NavLink exact activeClassName="active" to="/howto" className="item">
               {translation[currentLanguage]["howto"]}
-            </a>
+            </NavLink>
             <div className="right menu">
               <div className="ui dropdown item">
                 <div className="text">{currentCurrency}</div>

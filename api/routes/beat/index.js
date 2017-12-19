@@ -1,11 +1,15 @@
 const express = require("express");
 const getBeats = require("./getBeats");
 const getBeat = require("./getBeat");
-const getSummary = require("./getSummary");
+const createBeat = require("./createBeat");
+const removeBeat = require("./removeBeat");
+const createValidation = require("./middlewares/createValidation");
 const router = express.Router();
 
 router.get("/entries", getBeats);
-router.get("/entry/:id", getEntry);
-router.get("/summary", getSummary);
+router.get("/entry/:id", getBeat);
+router.delete("/entry/:id", removeBeat);
+router.post("/entry", [ ...createValidation ], createBeat);
 
 module.exports = router;
+
