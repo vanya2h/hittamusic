@@ -6,48 +6,53 @@ import Price from "../Price";
 import translation from "./translation";
 
 class BasketItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.createDropdown = this.createDropdown.bind(this);
+  }
 
   componentDidMount() {
-    const { translation, number, onChangeOption } = this.props;
-
     require("../../../dist/semantic/dist/semantic.min.js");
-    $(`.dropdown-${number}`)
-      .dropdown({
-        onChange: onChangeOption,
-        values: this.generateValues(this.props),
-      });
+    this.createDropdown(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { language, number, onChangeOption } = this.props;
+    const { language } = this.props;
 
     if (nextProps.language !== language) {
-      $(`.dropdown-${number}`)
-        .dropdown({
-          onChange: onChangeOption,
-          values: this.generateValues(nextProps),
-        });
+      this.createDropdown(nextProps)
     }
   }
 
-  generateValues(props) {
-    return [{
-      value: 'basic',
-      name: translation[props.language]['basic'],
-      selected: true,
-    }, {
-      value: 'premium',
-      name: translation[props.language]['premium'],
-    }, {
-      value: 'exclusive',
-      name: translation[props.language]['exclusive'],
-    }]
+  createDropdown(props) {
+    const { 
+      number, 
+      onChangeOption, 
+      language,
+      item
+    } = props;
+
+    $(`.dropdown-${number}`)
+      .dropdown({
+        onChange: onChangeOption,
+        placeholder: translation[language]["placeholder"],
+        values: generateValues(language, item.option)
+      });
+  }
+
+  removeFromCart() {
+    const { 
+      onRemove, 
+    } = this.props;
+
+    onRemove()
+      .then(() => this.createDropdown(this.props))
+      .catch((err) => console.log(err));
   }
 
   render() {
     const {
       classes,
-      onRemove,
       item,
       number,
       language,
@@ -65,16 +70,15 @@ class BasketItem extends React.Component {
               value={item.option}
               className={`ui selection dropdown-${number} large inverted`}
             >
-              <option value="basic">{translation[language]['basic']}</option>
-              <option value="premium">{translation[language]['premium']}</option>
-              <option value="exclusive">{translation[language]['exclusive']}</option>
             </select>
           </div>
           <div className="three wide column">
-            <h3 className={classes.price}>
-              <Price price={item.price[item.option]} />
-            </h3>
-            <span className={classes.remove} onClick={onRemove}>
+            {item.option &&
+              <h3 className={classes.price}>
+                <Price price={item.price[item.option]} />
+              </h3>
+            }
+            <span className={classes.remove} onClick={() => {this.removeFromCart()}}>
               <i className="icon close"></i> {translation[language]['remove']}
             </span>
           </div>
@@ -83,6 +87,21 @@ class BasketItem extends React.Component {
     )
   }
 }
+
+const generateValues = (language, selected) => [{
+  value: 'basic',
+  name: translation[language]['basic'],
+  selected: selected === 'basic',
+}, {
+  value: 'premium',
+  name: translation[language]['premium'],
+  selected: selected === 'premium',
+}, {
+  value: 'exclusive',
+  name: translation[language]['exclusive'],
+  selected: selected === 'exclusive',
+}]
+
 const mapStateToProps = ({ app }) => ({
   language: app.language,
 })

@@ -9,12 +9,14 @@ const translation = {
     ["basic"]: "Basic Lease",
     ["premium"]: "Premium Lease",
     ["exclusive"]: "Exclusive",
+    ["placeholder"]: "Choose Option",
   },
   [LANGUAGE_RUS]: {
     ["remove"]: "Удалить",
     ["basic"]: "Базовая аренда",
     ["premium"]: "Премиум аренда",
     ["exclusive"]: "Эксклюзивные права",
+    ["placeholder"]: "Выберите опцию"
   }
 };
 
