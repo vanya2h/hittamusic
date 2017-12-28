@@ -6,9 +6,9 @@ import Footer from "../components/Footer";
 class DefaultRoute extends Component {
   render() {
     return (
-      <div className="pusher">
+      <div className="pusher generic">
         <Header />
-        <div className="page-default">
+        <div className="page-generic">
           <Route {...this.props} />
         </div>
         <Footer />

@@ -6,6 +6,10 @@
   z-index:1000;
 }
 
+:global(.generic) :local(.menu) {
+  background:#000;
+}
+
 :local(.menu) :global(.item.active) {
   color:#fff!important;
   border-color:#fff!important;

@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import withStyles from "../HOC/styles";
 import howToStyles from "./styles.css";
-import translation from "./translation";
+import t from "./translation";
 
 const HowTo = ({ language, classes }) => {
   return (
     <div className={classes.wrapper}>
-      <h2>{translation[language]['title']}</h2>
-      <p>{translation[language]['content']}</p>
+      <h2>{t[language]['title']}</h2>
+      {React.cloneElement(t[language]['content'](classes))}
     </div>
   )
 }
