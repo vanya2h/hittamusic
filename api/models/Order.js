@@ -1,105 +1,49 @@
 const mongoose = require('mongoose');
+const mapOrder = require("../utils/mapOrder");
 const { Schema } = mongoose;
 
-const orderSchema = new Schema({
-  invId: {
-    type: String,
-    default: null,
-  },
-  description: {
-    type: String,
-    default: null,
-  },
+const OrderSchema = new Schema({
+  description: { type: String, default: null },
   items: [{
-    option: {
-      type: "String",
-      required: true,
-    },
-    id: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    }
+    option: { type: String, required: true },
+    id: { type: Schema.Types.ObjectId, ref: "Beat", required: true }
   }],
-  total: {
-    type: Number,
-    required: true,
-  },
-  done: {
-    type: Boolean,
-    default: false,
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  }
+  total: { type: Number, required: true },
+  isClosed: { type: Boolean, default: false },
+  currency: { type: String, default: "USD" },
+  invId: { type: Number, required: true },
+  email: { type: String, required: true },
+  created: { type: Date, default: Date.now }
 });
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = mongoose.models.Order 
+  || mongoose.model("Order", OrderSchema);
 
-Order.getOrders = (request, response, options, onOrders, onError) => {
-  Order.find(options, null, {
-    limit: +request.query.limit || 10,
-    skip: +request.query.skip || 0,
-    lean: true,
-  }, (err, orders) => {
-    if (err) {
-      if (onError) return onError("Ошибка во время поиска битов")
-      return response.status(500)
-        .send("Ошибка во время поиска битов");
-    } else {
-      if (onOrders) return onOrders(orders);
-      return response.status(200)
-        .json(orders);
-    }
-  });
-}
 
-Order.getOrder = (request, response, id, onOrder, onError) => {
-  Order.findById(id, null, {
-    lean: true,
-  }, (err, order) => {
-    if (err) {
-      if (onError) return onError("Неверный формат идентификатора")
-      return response.status(500)
-        .send("Неверный формат идентификатора");
-    } else if (!order) {
-      if (onError) return onError("Ордер не найден")
-      return response.status(404)
-        .send("Бит не найден");
-    } else {
-      if (onOrder) return onOrder(order);
-      return response.status(200)
-        .json(order);
-    }
-  });
-};
+Order.getOrder = query => Order
+  .findOne(query)
+  .then(order => mapOrder(order));
 
-Order.createOrder = (request, response, order, onOrder, onError) => {
-  Order.create(order, (err, createdOrder) => {
-    if (err) {
-      if (onError) return onError("Ошибка во время создания ордера")
-      return response.status(500)
-        .send("Ошибка во время создания ордера");
-    } else {
-      if (onOrder) return onOrder(createdOrder);
-      return response.status(200)
-        .json(createdOrder);
-    }
-  });
-};
+Order.getOrders = (query, params) => Order
+  .find(query, null, params)
+  .then(orders => orders.map(order => mapOrder(order)));
 
-Order.removeOrder = (request, response, id, onRemove, onError) => {
-  Order.remove({_id: id}, (err, mongo) => {
-    if (err) {
-      if (onError) return onError("Ошибка во время удаления ордера")
-      return response.status(500)
-        .send("Ошибка во время удаления ордера");
-    } else {
-      if (onRemove) return onRemove(mongo);
-      return response.status(200)
-        .json(mongo);
-    }
-  });
-};
+Order.createOrder = order => Order
+  .create(order)
+  .then(createdOrder => mapOrder(createdOrder));
+
+Order.updateOrder = (query, values) => Order
+  .findOneAndUpdate(query, values, { new : true })
+  .then(updatedOrder => mapOrder(updatedOrder));
+
+Order.removeOrder = (query) => Order
+  .remove(query);
+
+Order.closeOrder = (query) => Order
+  .updateOrder(query, { isClosed: true })
+
+Order.openOrder = (query) => Order
+  .updateOrder(query, { isClosed: false })
+
 
 module.exports = Order;

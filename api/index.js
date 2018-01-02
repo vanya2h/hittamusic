@@ -6,8 +6,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+const user = require('./routes/user');
 const beat = require('./routes/beat');
-//const order = require('./routes/order');
+const order = require('./routes/order');
 
 const app = express();
 const prefix = '/api';
@@ -32,7 +33,8 @@ app.use(morgan('dev'));
 app.use(cors());
 
 app.use(`${prefix}/beat`, beat);
-//app.use(`${prefix}/order`, order);
+app.use(`${prefix}/user`, user);
+app.use(`${prefix}/order`, order);
 
 app.get('/', (request, response) => 
   response.send('Api is Working'));

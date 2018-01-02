@@ -1,4 +1,4 @@
-module.exports = beat => ({
+module.exports = beat => beat ? ({
   id: beat._id,
   image: beat.image,
   title: beat.title,
@@ -11,4 +11,4 @@ module.exports = beat => ({
     exclusive: beat.price.exclusive,
   },
   created: beat.created,
-});
+}) : null;
