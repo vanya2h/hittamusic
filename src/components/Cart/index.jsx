@@ -5,6 +5,7 @@ import withStyles from "../HOC/styles";
 import cartStyles from "./styles.css";
 import { removeItemFromCart, changeOption } from "../../actions/cart";
 import translation from "./translation";
+import { Link } from "react-router-dom";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -52,9 +53,11 @@ class Cart extends React.Component {
         </div>
         {items && !!items.length &&
           <div className={classes.action}>
-            <button className="ui button fluid big green">
-              {translation[language]["proceed"]}
-            </button>
+            <Link to="/payment">
+              <button className="ui button fluid big green">
+                {translation[language]["proceed"]}
+              </button>
+            </Link>
           </div>
         }
       </div>

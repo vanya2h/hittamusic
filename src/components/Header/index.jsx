@@ -4,6 +4,8 @@ import withStyles from "../HOC/styles";
 import { NavLink } from "react-router-dom";
 import componentStyles from "./styles.css";
 import translation from "./translation";
+import Currency from "../Currency";
+import Language from "../Language";
 
 import {
   appSwitchLanguage,
@@ -31,10 +33,11 @@ class Header extends React.Component {
     const {
       classes,
       cartLength,
+      paymentsLength,
       appSwitchLanguage,
-      currentLanguage,
+      payments,
+      language,
       appSwitchCurrency,
-      currentCurrency,
     } = this.props;
 
     return (
@@ -42,50 +45,21 @@ class Header extends React.Component {
         <div className="ui container">
           <div className="ui big secondary pointing menu">
             <NavLink exact activeClassName="active" to="/" className="item">
-              {translation[currentLanguage]["beats"]}
+              {translation[language]["beats"]}
             </NavLink>
             <NavLink exact activeClassName="active" to="/howto" className="item">
-              {translation[currentLanguage]["howto"]}
+              {translation[language]["howto"]}
             </NavLink>
             <div className="right menu">
-              <div className="ui dropdown item">
-                <div className="text">{currentCurrency}</div>
-                <i className="dropdown icon"></i>
-                <div className="menu">
-                  <div onClick={() => {
-                    appSwitchCurrency(CURRENCY_RUBLE)
-                  }} className="item">
-                    <i className="ru flag"></i>
-                    {translation[currentLanguage]["ruble"]}
-                  </div>
-                  <div onClick={() => {
-                    appSwitchCurrency(CURRENCY_DOLLAR)
-                  }} className="item">
-                    <i className="us flag"></i>
-                    {translation[currentLanguage]["dollar"]}
-                  </div>
-                </div>
-              </div>
-              <div className="ui dropdown item">
-                <div className="text">Language: {currentLanguage}</div>
-                <i className="dropdown icon"></i>
-                <div className="menu">
-                  <div onClick={() => {
-                    appSwitchLanguage(LANGUAGE_RUS)
-                  }} className="item">
-                    <i className="ru flag"></i>
-                    Russian
-                  </div>
-                  <div onClick={() => {
-                    appSwitchLanguage(LANGUAGE_US)
-                  }} className="item">
-                    <i className="us flag"></i>
-                    US
-                  </div>
-                </div>
-              </div>
+              <Currency />
+              <Language />
+              {!!paymentsLength &&
+                <NavLink exact activeClassName="active" to="/payments" className="item">
+                  {translation[language]["payments"]} <div className="ui label">{paymentsLength}</div>
+                </NavLink>
+              }
               <NavLink activeclassName="active" to="/cart" className="ui item">
-                {translation[currentLanguage]["cart"]}
+                {translation[language]["cart"]}
                 <div className="ui red label">{cartLength}</div>
               </NavLink>
             </div>
@@ -96,10 +70,11 @@ class Header extends React.Component {
   }
 };
 
-const mapStateToProps = ({ cart, app }) => ({
+const mapStateToProps = ({ cart, app, payment }) => ({
   cartLength: cart.items.length,
-  currentLanguage: app.language,
-  currentCurrency: app.currency,
+  language: app.language,
+  payments: payment.list,
+  paymentsLength: payment.list.length,
 });
 
 const mapDispatchToProps = dispatch => ({

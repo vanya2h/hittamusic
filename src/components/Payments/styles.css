@@ -1,0 +1,17 @@
+:local(.wrapper) {
+  font-size:inherit;
+}
+
+:local(.header) {
+  max-width:450px;
+  margin: 20px auto;
+}
+
+:local(.description) {
+  font-size:17px;
+  margin-top:15px;
+}
+
+:local(.payment) {
+  font-size:inherit;
+}

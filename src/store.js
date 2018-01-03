@@ -2,14 +2,26 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
-import { LOCALSTORAGE } from "./consts";
+
+import {
+  LOCALSTORAGE,
+  LANGUAGE_US,
+  CURRENCY_DOLLAR
+} from "./consts";
+
 import db from "./db.json";
 
 const emptyState = {
   cart: {
     items: []
   },
-  app: {}
+  app: {
+    language: LANGUAGE_US,
+    currency: CURRENCY_DOLLAR,
+  },
+  payment: {
+    list: [],
+  }
 }
 
 const defaultState = localStorage[LOCALSTORAGE]
@@ -22,8 +34,8 @@ const store = createStore(reducers, {
 }, composeWithDevTools(applyMiddleware(thunk)));
 
 store.subscribe(() => {
-  const { cart, app } = store.getState();
-  localStorage[LOCALSTORAGE] = JSON.stringify({ cart, app });
+  const { cart, app, payment } = store.getState();
+  localStorage[LOCALSTORAGE] = JSON.stringify({ cart, app, payment });
 });
 
 export default store;

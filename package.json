@@ -4,6 +4,7 @@
   "description": "Hitta Music",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.17.1",
     "jquery": "^3.2.1",
     "jss": "^9.3.3",
     "jss-loader": "^1.0.0",

@@ -1,0 +1,12 @@
+:local(.wrapper) {
+  font-size:inherit;
+}
+
+:local(.content) {
+  max-width:450px;
+  margin: 20px auto;
+}
+
+:local(.content) p {
+  font-size:18px;
+}

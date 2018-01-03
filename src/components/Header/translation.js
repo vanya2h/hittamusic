@@ -11,6 +11,7 @@ const translation = {
     ["dollar"]: "Dollar",
     ["language"]: "Language",
     ["cart"]: "Cart",
+    ["payments"]: "Orders",
   },
   [LANGUAGE_RUS]: {
     ["beats"]: "Биты",
@@ -19,6 +20,7 @@ const translation = {
     ["dollar"]: "Доллар",
     ["language"]: "Язык",
     ["cart"]: "Корзина",
+    ["payments"]: "Заказы"
   }
 };
 

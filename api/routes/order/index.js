@@ -8,19 +8,20 @@ const parseQuery = require("./middlewares/parseQuery");
 const parseParams = require("./middlewares/parseParams");
 const auth = require("../../middlewares/auth");
 const helper = require("../../utils/configureHelper");
+const robokassaStatus = require("./middlewares/robokassaStatus");
 const router = express.Router();
 
 router.get("/entry/close", [
   parseQuery,
 ], (req, res) => {
   helper.handleResultUrlRequest(req, res, (values, userData) => {
-    // Check order then close it
-    return Promise.resolve();
+    return res.json(values)
   });
 })
 
 router.get("/entries", [
-  parseParams
+  parseParams,
+  parseQuery
 ], ({ parsedParams, parsedQuery }, res) => Order
   .getOrders(parsedQuery, parsedParams)
   .then(orders => res.json(orders))
@@ -36,11 +37,11 @@ router.get("/entry", [
 );
 
 router.post("/entry", [
-  auth, 
+  auth,
   createValidation,
   handleValidationResults,
   generatePaymentUrl
-], ({ matchedData, paymentUrl } , res) => Order
+], ({ matchedData, paymentUrl }, res) => Order
   .createOrder(matchedData)
   .then(createdOrder => res.json(Object.assign({}, createdOrder, {
     url: paymentUrl
@@ -49,8 +50,8 @@ router.post("/entry", [
 );
 
 router.put("/entry", [
-  auth, 
-  parseQuery, 
+  auth,
+  parseQuery,
   updateValidation,
   handleValidationResults,
 ], ({ matchedData, parsedQuery }, res) => Order
@@ -60,13 +61,26 @@ router.put("/entry", [
 );
 
 router.delete("/entry", [
-  auth, 
+  auth,
   parseQuery
 ], ({ parsedQuery }, res) => Order
   .removeOrder(parsedQuery)
   .then(mongo => res.json(mongo))
   .catch(err => res.status(500).send(err))
 )
+
+router.get("/entry/status", [
+  parseQuery,
+  robokassaStatus,
+], ({ parsedQuery, robokassaStatus }, res) =>
+    // Order
+    //   .getOrder(parsedQuery)
+    //   .then(order => res.json(Object.assign({}, order, {
+    //     robokassaStatus
+    //   })))
+    //   .catch(err => res.status(500).send(err))
+    res.json(robokassaStatus)
+);
 
 module.exports = router;
 

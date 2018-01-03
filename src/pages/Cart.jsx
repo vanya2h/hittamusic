@@ -1,7 +1,5 @@
 import React from "react";
-import Carousel from "../components/Carousel";
 import Cart from "../components/Cart";
-import db from "../db.json";
 
 const CartPage = () => {
   return (

@@ -16,11 +16,11 @@ const OrderSchema = new Schema({
   created: { type: Date, default: Date.now }
 });
 
-const Order = mongoose.models.Order 
+const Order = mongoose.models.Order
   || mongoose.model("Order", OrderSchema);
 
 
-Order.getOrder = query => Order
+Order.getOrder = (query = {}) => Order
   .findOne(query)
   .then(order => mapOrder(order));
 
@@ -33,7 +33,7 @@ Order.createOrder = order => Order
   .then(createdOrder => mapOrder(createdOrder));
 
 Order.updateOrder = (query, values) => Order
-  .findOneAndUpdate(query, values, { new : true })
+  .findOneAndUpdate(query, values, { new: true })
   .then(updatedOrder => mapOrder(updatedOrder));
 
 Order.removeOrder = (query) => Order

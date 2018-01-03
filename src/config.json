@@ -1,3 +1,4 @@
 {
-  "ratio": 60
+  "ratio": 60,
+  "api": "http://localhost:3010/api"
 }

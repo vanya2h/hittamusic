@@ -1,7 +1,8 @@
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
-  CART_CHANGE_OPTION
+  CART_CHANGE_OPTION,
+  CART_CLEAR_CART
 } from '../consts';
 
 const defaultState = {
@@ -15,16 +16,22 @@ export default (state = defaultState, action) => {
         ...state,
         items: [
           ...state.items,
-          {
-            ...action.payload,
-          }
+          { ...action.payload, }
         ]
       }
 
     case CART_REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter(item => item.id !== action.payload),
+        items: state.items.filter(item => 
+          item.id !== action.payload
+        ),
+      }
+
+    case CART_CLEAR_CART:
+      return {
+        ...state,
+        items: [],
       }
 
     case CART_CHANGE_OPTION:
@@ -43,6 +50,7 @@ export default (state = defaultState, action) => {
           }
         })
       }
+      
     default:
       return state;
   }
