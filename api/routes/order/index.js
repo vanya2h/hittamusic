@@ -9,6 +9,8 @@ const parseParams = require("./middlewares/parseParams");
 const auth = require("../../middlewares/auth");
 const helper = require("../../utils/configureHelper");
 const robokassaStatus = require("./middlewares/robokassaStatus");
+const getEntry = require("./middlewares/getEntry");
+const generateInvId = require("./middlewares/generateInvId");
 const router = express.Router();
 
 router.get("/entry/close", [
@@ -37,12 +39,14 @@ router.get("/entry", [
 );
 
 router.post("/entry", [
-  auth,
   createValidation,
   handleValidationResults,
-  generatePaymentUrl
-], ({ matchedData, paymentUrl }, res) => Order
-  .createOrder(matchedData)
+  generatePaymentUrl,
+  generateInvId
+], ({ matchedData, paymentUrl, invId }, res) => Order
+  .createOrder(Object.assign({}, matchedData, {
+    invId: invId
+  }))
   .then(createdOrder => res.json(Object.assign({}, createdOrder, {
     url: paymentUrl
   })))
@@ -71,15 +75,12 @@ router.delete("/entry", [
 
 router.get("/entry/status", [
   parseQuery,
+  getEntry,
   robokassaStatus,
-], ({ parsedQuery, robokassaStatus }, res) =>
-    // Order
-    //   .getOrder(parsedQuery)
-    //   .then(order => res.json(Object.assign({}, order, {
-    //     robokassaStatus
-    //   })))
-    //   .catch(err => res.status(500).send(err))
-    res.json(robokassaStatus)
+], ({ parsedQuery, robokassaStatus, entry }, res) =>
+    res.json(Object.assign({}, entry, {
+      robokassaStatus
+    }))
 );
 
 module.exports = router;
